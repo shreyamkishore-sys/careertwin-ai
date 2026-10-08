@@ -1,0 +1,73 @@
+MARKET_CATALOG = [
+    {
+        "code": "IN",
+        "label": "India",
+        "flag": "🇮🇳",
+        "currency": "INR",
+        "currency_symbol": "₹",
+        "unit": "₹ lakh / year",
+        "locale": "en-IN",
+        "available": True,
+        "status_note": "Illustrative local sample available.",
+    },
+    {
+        "code": "US",
+        "label": "United States",
+        "flag": "🇺🇸",
+        "currency": "USD",
+        "currency_symbol": "$",
+        "unit": "USD / year",
+        "locale": "en-US",
+        "available": True,
+        "status_note": "Illustrative local sample available.",
+    },
+    {
+        "code": "UK",
+        "label": "United Kingdom",
+        "flag": "🇬🇧",
+        "currency": "GBP",
+        "currency_symbol": "£",
+        "unit": "GBP / year",
+        "locale": "en-GB",
+        "available": False,
+        "status_note": "Add a reviewed local dataset before enabling this market.",
+    },
+    {
+        "code": "CA",
+        "label": "Canada",
+        "flag": "🇨🇦",
+        "currency": "CAD",
+        "currency_symbol": "CA$",
+        "unit": "CAD / year",
+        "locale": "en-CA",
+        "available": False,
+        "status_note": "Add a reviewed local dataset before enabling this market.",
+    },
+    {
+        "code": "AU",
+        "label": "Australia",
+        "flag": "🇦🇺",
+        "currency": "AUD",
+        "currency_symbol": "A$",
+        "unit": "AUD / year",
+        "locale": "en-AU",
+        "available": False,
+        "status_note": "Add a reviewed local dataset before enabling this market.",
+    },
+    {
+        "code": "DE",
+        "label": "Germany",
+        "flag": "🇩🇪",
+        "currency": "EUR",
+        "currency_symbol": "€",
+        "unit": "EUR / year",
+        "locale": "de-DE",
+        "available": False,
+        "status_note": "Add a reviewed local dataset before enabling this market.",
+    },
+]
+
+MARKET_DATA_STATUS = "prototype_illustrative"
+MARKET_DATA_SOURCE = (
+    "CareerTwin local demonstration dataset (synthetic; not sourced from labor-market observations)"
+)

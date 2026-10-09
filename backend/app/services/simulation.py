@@ -48,10 +48,7 @@ def build_career_simulations(
     simulations = []
 
     for career in careers:
-        trajectory = CAREER_SIMULATION_DATA.get(career.id)
-        if trajectory is None:
-            raise RuntimeError(f"Missing salary trajectory for career '{career.id}'.")
-
+        trajectory = CAREER_SIMULATION_DATA[career.id]
         milestones = trajectory["salary"][market_code]
         precision = 1 if market_code == "IN" else 0
         stages = trajectory["stages"]

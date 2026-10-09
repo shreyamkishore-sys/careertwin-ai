@@ -23,7 +23,10 @@ export const DECISION_SCORE_WEIGHTS = {
 } as const;
 
 const clamp = (value: number) => Math.max(0, Math.min(100, value));
-const rating = (value: number | undefined) => Number.isInteger(value) && value! >= 1 && value! <= 5 ? value! : 3;
+const rating = (value: number | undefined): number =>
+  typeof value === "number" && Number.isInteger(value) && value >= 1 && value <= 5
+    ? value
+    : 3;
 
 export const PRIORITY_FACTORS: {
   key: DecisionPriorityKey;

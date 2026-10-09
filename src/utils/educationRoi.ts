@@ -16,10 +16,38 @@ export interface EducationTrajectoryRow {
   role: string;
 }
 
-function yearValue(career: CareerSimulation | undefined, year: number, band: "low" | "mid" | "high"): number {
+type SalaryBand = "low" | "mid" | "high";
+
+function yearValue(career: CareerSimulation | undefined, year: number, band: SalaryBand): number {
   if (!career?.years.length) return 0;
   const point = career.years.find((item) => item.year === year) ?? career.years[career.years.length - 1];
   return point[`salary_${band}`];
+}
+
+function educationSalary({
+  currentSalary,
+  targetCareer,
+  year,
+  startAfter,
+  duration,
+  path,
+  adjustment,
+  band,
+}: {
+  currentSalary: number;
+  targetCareer?: CareerSimulation;
+  year: number;
+  startAfter: number;
+  duration: number;
+  path: EducationPath;
+  adjustment: number;
+  band: SalaryBand;
+}): number {
+  if (year <= startAfter) return currentSalary;
+  if (year <= startAfter + duration) return path === "part_time_mba" ? currentSalary : 0;
+
+  const targetYear = year - startAfter - duration;
+  return yearValue(targetCareer, targetYear, band) * adjustment;
 }
 
 export function buildEducationTrajectory({
@@ -46,14 +74,13 @@ export function buildEducationTrajectory({
     const workLow = yearValue(currentCareer, year, "low");
     const work = yearValue(currentCareer, year, "mid");
     const workHigh = yearValue(currentCareer, year, "high");
-    const starts = year > startAfter;
-    const studyYear = starts && year <= startAfter + duration;
-    const afterStudy = starts && year > startAfter + duration;
-    const targetElapsed = afterStudy ? year - startAfter - duration : 0;
     const adjustment = 1 + postAdjustment / 100;
-    const educationLow = !starts ? workLow : afterStudy ? yearValue(targetCareer, targetElapsed, "low") * adjustment : path === "part_time_mba" ? workLow : 0;
-    const education = !starts ? work : afterStudy ? yearValue(targetCareer, targetElapsed, "mid") * adjustment : path === "part_time_mba" ? work : 0;
-    const educationHigh = !starts ? workHigh : afterStudy ? yearValue(targetCareer, targetElapsed, "high") * adjustment : path === "part_time_mba" ? workHigh : 0;
+    const educationLow = educationSalary({ currentSalary: workLow, targetCareer, year, startAfter, duration, path, adjustment, band: "low" });
+    const education = educationSalary({ currentSalary: work, targetCareer, year, startAfter, duration, path, adjustment, band: "mid" });
+    const educationHigh = educationSalary({ currentSalary: workHigh, targetCareer, year, startAfter, duration, path, adjustment, band: "high" });
+    const studyYear = year > startAfter && year <= startAfter + duration;
+    const afterStudy = year > startAfter + duration;
+    const targetElapsed = afterStudy ? year - startAfter - duration : 0;
     cumulativeWork += work;
     cumulativeEducation += education;
     rows.push({
